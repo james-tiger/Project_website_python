@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Professions Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <!-- Chart.js CDN -->
+
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #495057;
+        }
+
+        header {
+            background-color: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 40px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            background-color: #007bff;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #f8f9fa;
+        }
+
+        main {
+            padding: 40px 20px;
+            background-color: #fff;
+            margin: 30px auto;
+            max-width: 1200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        main h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .profession {
+            margin-bottom: 50px;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .profession:hover {
+            transform: translateY(-10px);
+        }
+
+        .profession h3 {
+            color: #343a40;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .profession p {
+            margin: 15px 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .profession strong {
+            color: #007bff;
+        }
+
+        .profession canvas {
+            margin-top: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .profession .deed-link {
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .profession .deed-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .profession a {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .profession a:hover {
+            color: #0056b3;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul li {
+                display: block;
+                margin: 5px 0;
+            }
+
+            main {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .profession {
+                padding: 15px;
+            }
+
+            .profession h3 {
+                font-size: 1.4rem;
+            }
+
+            .profession p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>IT Professions Portal</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'profession_list' %}">Home</a></li>
+            <li><a href="{% url 'general_statistics' %}">General Statistics</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Profession Details</h2>
+
+        {% for profession in professions %}
+        <div class="profession">
+            <h3>{{ profession.title }}</h3>
+            <p><strong>Salary Range:</strong> ${{ profession.salary_from }} - ${{ profession.salary_to }}</p>
+            <p><strong>City:</strong> {{ profession.city }}</p>
+            <p><strong>Key Skills:</strong> {{ profession.key_skills }}</p>
+            <p><strong>Description:</strong> {{ profession.description }}</p>
+            <p><strong>Date Posted:</strong> {{ profession.date_posted }}</p>
+
+            <!-- Add Chart for Salary Distribution -->
+            <canvas id="salaryChart-{{ profession.id }}" width="400" height="200"></canvas>
+            <script>
+                var ctx = document.getElementById('salaryChart-{{ profession.id }}').getContext('2d');
+                var salaryChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Min Salary', 'Max Salary'],
+                        datasets: [{
+                            label: 'Salary Distribution',
+                            data: [{{ profession.salary_from }}, {{ profession.salary_to }}],
+                            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+
+            <!-- Pie chart for Key Skills -->
+            <canvas id="skillsChart-{{ profession.id }}" width="400" height="200"></canvas>
+            <script>
+                var skills = "{{ profession.key_skills }}".split(',');  // Split key_skills string into an array
+                var skillCount = skills.length;
+                var skillsData = new Array(skillCount).fill(100 / skillCount);  // Simple example: distribute equally
+
+                var ctx = document.getElementById('skillsChart-{{ profession.id }}').getContext('2d');
+                var skillsChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: skills,  // Use dynamic skills
+                        datasets: [{
+                            label: 'Key Skills Distribution',
+                            data: skillsData,  // Use dynamic data
+                            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+            </script>
+
+            <!-- Clickable Link to "Deed to Deed" Page -->
+            <a href="{% url 'deed_to_deed' profession.id %}" class="deed-link">Click here to see deed-to-deed details</a>
+            <a href="{% url 'geography' profession.id %}">View Geography</a>
+            <a href="{% url 'skills_view' profession.id %}">View Skills</a>
+            <a href="{% url 'last_vacancies' profession.id %}">View Last Vacancies</a>
+
+        </div>
+        {% endfor %}
+    </main>
+
+    <footer>
+        <p>Full Name: Mostafa Mohamed Ashraf Yakout Saad | Academic Group: PN</p>
+    </footer>
+</body>
+</html>

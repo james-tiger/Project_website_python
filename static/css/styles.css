@@ -1,0 +1,125 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header and Footer */
+header {
+  background-color: #343a40;
+  color: #fff;
+  padding: 10px 0;
+  text-align: center;
+}
+
+footer {
+  background-color: #343a40;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: 20px;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f1f1f1;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #e9ecef;
+}
+
+/* Charts Container */
+.canvas-container {
+  width: 100%;
+  height: 400px;
+  margin-bottom: 30px;
+}
+
+h1, h2, h3 {
+  color: #343a40;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  margin-top: 20px;
+}
+
+h2 {
+  font-size: 2em;
+  margin-top: 40px;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+/* Card Styles for Top Skills */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  font-size: 1.1em;
+}
+
+ul li:hover {
+  background-color: #f1f1f1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .row {
+    display: block;
+  }
+
+  .col-md-6 {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .canvas-container {
+    height: 300px;
+  }
+}

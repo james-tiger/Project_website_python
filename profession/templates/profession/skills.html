@@ -1,0 +1,92 @@
+{% block content %}
+  <h1 class="text-center mb-4">Top 20 Skills for {{ profession.title }}</h1>
+
+  <div class="container">
+    <!-- Back Button -->
+    <div class="text-center mb-4">
+      <a href="{% url 'profession_list' %}" class="btn btn-primary">Back to Profession List</a>
+    </div>
+
+    <!-- Skills Table -->
+    <div class="mb-5">
+      <h3 class="text-primary mb-3">Top 20 Skills by Frequency</h3>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Skill</th>
+            <th>Frequency</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for skill, count in top_20_skills %}
+            <tr>
+              <td>{{ skill }}</td>
+              <td>{{ count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Skills Chart -->
+    <div class="mb-5">
+      <h3 class="text-primary mb-3">Skills Frequency Chart</h3>
+      <div class="text-center">
+        <img src="data:image/png;base64,{{ image_base64 }}" alt="Skills Chart" class="img-fluid" />
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+<style>
+  /* Custom Styles */
+  .text-center {
+    text-align: center;
+  }
+
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+
+  .mb-5 {
+    margin-bottom: 2rem;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+  }
+
+  .table-bordered {
+    border: 1px solid #dee2e6;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+
+  .thead-dark {
+    background-color: #343a40;
+    color: white;
+  }
+
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
