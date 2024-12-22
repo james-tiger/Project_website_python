@@ -9,27 +9,31 @@
     <style>
         /* General Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #1a1a1a; /* Dark background */
+            color: #fff; /* White text */
         }
 
         header {
-            background-color: #343a40;
-            color: #fff;
+            background-color: #ff4c4c; /* Red background */
+            color: #fff; /* White text */
             text-align: center;
-            padding: 20px 0;
+            padding: 40px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         header h1 {
             margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
         }
 
         nav {
-            background-color: #007bff;
+            background-color: #b33b3b; /* Medium red background */
             padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
         nav ul {
@@ -39,33 +43,40 @@
         }
 
         nav ul li {
-            display: inline;
+            display: inline-block;
             margin: 0 15px;
         }
 
         nav ul li a {
-            color: #fff;
+            color: #fff; /* White text */
             text-decoration: none;
-            font-size: 16px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         nav ul li a:hover {
-            text-decoration: underline;
+            background-color: #ff4c4c; /* Light red background on hover */
+            color: #fff; /* White text on hover */
         }
 
         main {
-            padding: 20px;
-            background-color: #fff;
-            margin: 20px auto;
+            padding: 40px 20px;
+            background-color: #2e2e2e; /* Darker gray background */
+            margin: 30px auto;
             max-width: 1200px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         main h2 {
             text-align: center;
-            color: #007bff;
-            margin-bottom: 20px;
+            color: #fff; /* White text */
+            margin-bottom: 30px;
+            font-size: 2rem;
         }
 
         section {
@@ -81,19 +92,20 @@
         section table th, section table td {
             padding: 10px;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid #ff4c4c; /* Red border */
+            color: #fff; /* White text */
         }
 
         section table th {
-            background-color: #f4f4f4;
+            background-color: #b33b3b; /* Medium red background for headers */
         }
 
         section table tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #ff6666; /* Light red for even rows */
         }
 
         section table tr:hover {
-            background-color: #f1f1f1;
+            background-color: #ff4c4c; /* Hover effect with red background */
         }
 
         section canvas {
@@ -104,10 +116,10 @@
         }
 
         footer {
-            background-color: #343a40;
-            color: #fff;
+            background-color: #2e2e2e; /* Dark gray background */
+            color: #fff; /* White text */
             text-align: center;
-            padding: 10px 0;
+            padding: 20px 0;
             margin-top: 40px;
         }
 
@@ -123,7 +135,8 @@
             }
 
             main {
-                margin: 10px;
+                margin: 20px;
+                padding: 20px;
             }
 
             section table th, section table td {
@@ -229,6 +242,7 @@
 
         <section>
             <h2>Top 20 Skills</h2>
+            <canvas id="skillsChart"></canvas>
             <table>
                 <thead>
                     <tr>
@@ -249,7 +263,8 @@
     </main>
 
     <footer>
-        <p>Full Name: Your Name | Academic Group: Your Group</p>
+        <p>Full Name: Mostafa Mohamed Ashraf Yakout Saad</p>
+        <p>Academic Group: 	РИ-230910</p>
     </footer>
 
     <script>
@@ -260,12 +275,39 @@
             datasets: [{
                 label: 'Average Salary',
                 data: [{% for salary in salary_dynamics.values %}{{ salary }},{% endfor %}],
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(255, 76, 76, 0.2)', /* Light red */
+                borderColor: 'rgba(255, 76, 76, 1)', /* Red */
                 borderWidth: 1
             }]
         };
         new Chart(salaryCtx, { type: 'line', data: salaryData });
+
+        // Skills Chart (Doughnut)
+        const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+        const skillsData = {
+            labels: [{% for skill in top_skills.keys %}'{{ skill }}',{% endfor %}],
+            datasets: [{
+                data: [{% for count in top_skills.values %}{{ count }},{% endfor %}],
+                backgroundColor: ['#ff4c4c', '#ffcc00', '#ff3333', '#ff6666'],
+                borderColor: '#ff4c4c', /* Red border */
+                borderWidth: 1
+            }]
+        };
+        new Chart(skillsCtx, {
+            type: 'doughnut',
+            data: skillsData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#fff' /* White text in legend */
+                        }
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>

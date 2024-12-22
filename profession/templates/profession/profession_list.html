@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IT Professions Portal</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
 
     <style>
         /* General Styles */
@@ -12,16 +12,16 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
-            color: #495057;
+            background-color: #1a1a1a; /* Black background */
+            color: #f4f4f4; /* Light text */
         }
 
         header {
-            background-color: #343a40;
+            background-color: #e50914; /* Red background */
             color: #fff;
             text-align: center;
             padding: 40px 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         header h1 {
@@ -31,9 +31,9 @@
         }
 
         nav {
-            background-color: #007bff;
+            background-color: #333; /* Dark gray background */
             padding: 10px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
         nav ul {
@@ -48,30 +48,33 @@
         }
 
         nav ul li a {
-            color: #fff;
+            color: #f4f4f4; /* Light text */
             text-decoration: none;
             font-size: 1.1rem;
             text-transform: uppercase;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         nav ul li a:hover {
-            color: #f8f9fa;
+            background-color: #e50914; /* Red background on hover */
+            color: #fff; /* White text */
         }
 
         main {
             padding: 40px 20px;
-            background-color: #fff;
+            background-color: #333; /* Dark gray background */
             margin: 30px auto;
             max-width: 1200px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         main h2 {
             text-align: center;
-            color: #007bff;
+            color: #e50914; /* Red text */
             margin-bottom: 30px;
             font-size: 2rem;
         }
@@ -79,9 +82,9 @@
         .profession {
             margin-bottom: 50px;
             padding: 25px;
-            background-color: #f8f9fa;
+            background-color: #272727; /* Black background */
             border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
         }
 
@@ -90,7 +93,7 @@
         }
 
         .profession h3 {
-            color: #343a40;
+            color: #e50914; /* Red text */
             font-size: 1.6rem;
             margin-bottom: 20px;
             font-weight: 600;
@@ -103,7 +106,7 @@
         }
 
         .profession strong {
-            color: #007bff;
+            color: #e50914; /* Red highlight */
         }
 
         .profession canvas {
@@ -113,39 +116,35 @@
             margin-right: auto;
         }
 
-        .profession .deed-link {
+        .buttons {
+            display: flex;
+            justify-content: space-around;
             margin-top: 20px;
-            display: block;
-            text-align: center;
-            font-size: 1.2rem;
-            color: #007bff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
         }
 
-        .profession .deed-link:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
-
-        .profession a {
+        .buttons a {
             display: inline-block;
-            margin-top: 15px;
-            font-size: 1.1rem;
-            color: #007bff;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            color: #fff; /* White text */
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
-        .profession a:hover {
-            color: #0056b3;
+        .buttons a.btn-red {
+            background-color: #e50914; /* Red button */
+        }
+
+        .buttons a.btn-red:hover {
+            background-color: #ff4d4d; /* Lighter red on hover */
         }
 
         footer {
-            background-color: #343a40;
-            color: #fff;
+            background-color: #333; /* Dark gray background */
+            color: #f4f4f4; /* Light text */
             text-align: center;
             padding: 20px;
             margin-top: 40px;
@@ -180,6 +179,11 @@
             .profession p {
                 font-size: 1rem;
             }
+
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -192,6 +196,8 @@
         <ul>
             <li><a href="{% url 'profession_list' %}">Home</a></li>
             <li><a href="{% url 'general_statistics' %}">General Statistics</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
         </ul>
     </nav>
 
@@ -207,64 +213,48 @@
             <p><strong>Description:</strong> {{ profession.description }}</p>
             <p><strong>Date Posted:</strong> {{ profession.date_posted }}</p>
 
-            <!-- Add Chart for Salary Distribution -->
-            <canvas id="salaryChart-{{ profession.id }}" width="400" height="200"></canvas>
+            <!-- Doughnut Chart for Key Skills -->
+            <canvas id="skillsChart-{{ profession.id }}" width="400" height="200"></canvas>
             <script>
-                var ctx = document.getElementById('salaryChart-{{ profession.id }}').getContext('2d');
-                var salaryChart = new Chart(ctx, {
-                    type: 'bar',
+                var skills = "{{ profession.key_skills }}".split(','); // Split key_skills string into an array
+                var skillCount = skills.length;
+                var skillsData = new Array(skillCount).fill(100 / skillCount); // Distribute equally for simplicity
+
+                var ctx = document.getElementById('skillsChart-{{ profession.id }}').getContext('2d');
+                var skillsChart = new Chart(ctx, {
+                    type: 'doughnut',
                     data: {
-                        labels: ['Min Salary', 'Max Salary'],
+                        labels: skills,
                         datasets: [{
-                            label: 'Salary Distribution',
-                            data: [{{ profession.salary_from }}, {{ profession.salary_to }}],
-                            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
-                            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                            data: skillsData,
+                            backgroundColor: [
+                                '#e50914', '#f4f4f4', '#ffcc00', '#1a1a1a', '#333'
+                            ],
+                            borderColor: ['#1a1a1a'],
                             borderWidth: 1
                         }]
                     },
                     options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#f4f4f4' /* Light text */
+                                }
                             }
                         }
                     }
                 });
             </script>
 
-            <!-- Pie chart for Key Skills -->
-            <canvas id="skillsChart-{{ profession.id }}" width="400" height="200"></canvas>
-            <script>
-                var skills = "{{ profession.key_skills }}".split(',');  // Split key_skills string into an array
-                var skillCount = skills.length;
-                var skillsData = new Array(skillCount).fill(100 / skillCount);  // Simple example: distribute equally
-
-                var ctx = document.getElementById('skillsChart-{{ profession.id }}').getContext('2d');
-                var skillsChart = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: skills,  // Use dynamic skills
-                        datasets: [{
-                            label: 'Key Skills Distribution',
-                            data: skillsData,  // Use dynamic data
-                            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-                            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true
-                    }
-                });
-            </script>
-
-            <!-- Clickable Link to "Deed to Deed" Page -->
-            <a href="{% url 'deed_to_deed' profession.id %}" class="deed-link">Click here to see deed-to-deed details</a>
-            <a href="{% url 'geography' profession.id %}">View Geography</a>
-            <a href="{% url 'skills_view' profession.id %}">View Skills</a>
-            <a href="{% url 'last_vacancies' profession.id %}">View Last Vacancies</a>
-
+            <!-- Buttons -->
+            <div class="buttons">
+                <a href="{% url 'deed_to_deed' profession.id %}" class="btn-red">Deed-to-Deed</a>
+                <a href="{% url 'geography' profession.id %}" class="btn-red">Geography</a>
+                <a href="{% url 'skills_view' profession.id %}" class="btn-red">Skills</a>
+                <a href="{% url 'last_vacancies' profession.id %}" class="btn-red">Vacancies</a>
+            </div>
         </div>
         {% endfor %}
     </main>

@@ -26,6 +26,9 @@ urlpatterns = [
     path('profession/<int:profession_id>/geography/', views.geography, name='geography'),
     path('profession/<int:profession_id>/skills/', views.skills_view, name='skills_view'),
     path('profession/<int:profession_id>/last-vacancies/', views.last_vacancies, name='last_vacancies'),
+    path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
+
 
 
 
