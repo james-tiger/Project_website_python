@@ -1,5 +1,5 @@
 A Django-based web application that provides detailed insights into various IT professions, including analytics, infographics, and job vacancies updated every 24 hours.
-#[https://xtigergmerx.pythonanywhere.com/profession/](#https://xtigergmerx.pythonanywhere.com/profession/)
+#[https://xtigergmerx.pythonanywhere.com/profession/]
 ---
 
 ## Table of Contents
