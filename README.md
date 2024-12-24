@@ -45,5 +45,6 @@ A Django-based web application that provides detailed insights into various IT p
 - Python 3.8 or higher
 - Virtualenv
 - Git installed locally
-
-### Installation Steps
+- MongoDB instance for real-time data
+- Access to **hh.ru API** for job vacancy data
+- Access to the **Calculation API** for profession-related calculations
