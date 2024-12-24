@@ -1,4 +1,4 @@
-# IT Professions Web Application
+![image](https://github.com/user-attachments/assets/3d913a0b-16c7-4018-8d34-632b2ec90fb5)# IT Professions Web Application
 
 A Django-based web application that provides detailed insights into various IT professions, including analytics, infographics, and job vacancies updated every 24 hours.
 
@@ -48,3 +48,8 @@ A Django-based web application that provides detailed insights into various IT p
 - MongoDB instance for real-time data
 - Access to **hh.ru API** for job vacancy data
 - Access to the **Calculation API** for profession-related calculations
+
+
+![image](https://github.com/user-attachments/assets/acc0f76d-1c8f-4d83-92a2-8af54380e441)
+![image](https://github.com/user-attachments/assets/0f47b33b-9238-4411-aba2-ea1354dc10d0)
+
