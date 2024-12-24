@@ -50,4 +50,5 @@ A Django-based web application that provides detailed insights into various IT p
 
 ![image](https://github.com/user-attachments/assets/acc0f76d-1c8f-4d83-92a2-8af54380e441)
 ![image](https://github.com/user-attachments/assets/0f47b33b-9238-4411-aba2-ea1354dc10d0)
+![image](https://github.com/user-attachments/assets/51064c0f-7cb1-4064-ad5f-94a85c0c49a8)
 
