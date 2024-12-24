@@ -1,5 +1,3 @@
-![image](https://github.com/user-attachments/assets/3d913a0b-16c7-4018-8d34-632b2ec90fb5)# IT Professions Web Application
-
 A Django-based web application that provides detailed insights into various IT professions, including analytics, infographics, and job vacancies updated every 24 hours.
 
 ---
