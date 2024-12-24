@@ -23,8 +23,3 @@ class VacanciesByCityAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(VacancyOverride)
-class VacancyOverrideAdmin(admin.ModelAdmin):
-    list_display = ('name', 'company_name', 'region', 'date_published')
-    search_fields = ('name', 'company_name', 'region')
-    list_filter = ('region', 'date_published')

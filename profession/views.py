@@ -1,6 +1,7 @@
 import datetime
 from datetime import datetime, timedelta
 import requests
+from django.core.paginator import Paginator
 from django.db.models import Count, Avg, F
 from django.shortcuts import render, get_object_or_404
 import matplotlib.pyplot as plt
@@ -10,6 +11,12 @@ import base64
 import random
 from .models import Profession, SalaryByCity, VacanciesByCity, VacancyOverride
 from collections import Counter
+
+
+
+# HH.ru API credentials
+CLIENT_ID = 'JEDT7APAPUNLGPKMB9524VPJ6GT1UV3DC4A2VKT180VFL1PIIU928A5MLQ7CMN6R'
+CLIENT_SECRET = 'Q8K5CTOPHS1IRTV8J6V6DV95BOP461O9TM9SP1JC2TMII22N39UED6A746HBONUJ'
 
 # Function to get currency conversion rates
 def get_currency_rate(from_currency, to_currency="RUB"):
@@ -212,27 +219,33 @@ def skills_view(request, profession_id):
 
 #LAST PAGE
 
-def last_vacancies(request, profession_id):
-    # Define the API endpoint
-    url = f'https://api.hh.ru/vacancies?specialization={profession_id}&date_from={(datetime.now() - timedelta(days=1)).isoformat()}'
+from django.http import JsonResponse
 
-    # Make the GET request to fetch the last 24 hours of vacancies
+
+def last_vacancies(request, profession_id):
+    # Calculate the date for the last 24 hours
+    date_from = (datetime.now() - timedelta(days=1)).isoformat()
+
+    # API URL for fetching vacancies
+    url = f'https://api.hh.ru/vacancies?specialization={profession_id}&date_from={date_from}'
+
+    # Make the API request
     response = requests.get(url)
+
     if response.status_code == 200:
         vacancies_data = response.json()
-        # Extract relevant data (assuming 'items' contains the list of vacancies)
         api_vacancies = vacancies_data.get('items', [])
     else:
+        print("API Error:", response.status_code, response.text)  # Debug: Print error
         api_vacancies = []
 
-    # Process vacancies to include overrides from the database
     vacancies = []
     for vacancy in api_vacancies:
         vacancy_id = vacancy.get('id')
         override = VacancyOverride.objects.filter(vacancy_id=vacancy_id).first()
 
         if override:
-            # Use data from the override
+            # If there's an override, use the overridden values
             vacancies.append({
                 'name': override.name,
                 'description': override.description or vacancy.get('description', "No description available"),
@@ -243,20 +256,32 @@ def last_vacancies(request, profession_id):
                 'date_published': override.date_published,
             })
         else:
-            # Use API data if no override exists
+            # If no override, use the API data
+            key_skills = vacancy.get('key_skills', [])
+            if key_skills:
+                # Extract key skills if available
+                key_skills_list = [skill['name'] for skill in key_skills]
+            else:
+                # If no key skills, set as empty list or placeholder
+                key_skills_list = ["No skills specified"]
+
             vacancies.append({
                 'name': vacancy.get('name', "Unknown"),
                 'description': vacancy.get('description', "No description available"),
-                'key_skills': vacancy.get('key_skills', []),
+                'key_skills': key_skills_list,
                 'company': {'name': vacancy.get('employer', {}).get('name', "Unknown")},
                 'salary': vacancy.get('salary', {}),
                 'region': {'name': vacancy.get('area', {}).get('name', "Unknown")},
                 'date_published': vacancy.get('published_at'),
             })
 
-    # Prepare the context for the template
+    # Pagination
+    paginator = Paginator(vacancies, 5)  # Show 5 vacancies per page
+    page_number = request.GET.get('page')  # Get the page number from the request
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'vacancies': vacancies,
+        'vacancies': page_obj,
         'profession_id': profession_id,
     }
 

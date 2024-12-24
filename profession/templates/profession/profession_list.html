@@ -14,6 +14,9 @@
             padding: 0;
             background-color: #1a1a1a; /* Black background */
             color: #f4f4f4; /* Light text */
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
         }
 
         header {
@@ -22,6 +25,7 @@
             text-align: center;
             padding: 40px 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 100%;
         }
 
         header h1 {
@@ -30,20 +34,24 @@
             letter-spacing: 2px;
         }
 
+        /* Sidebar Styles */
         nav {
             background-color: #333; /* Dark gray background */
+            width: 250px;
             padding: 10px 0;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            bottom: 0;
         }
 
         nav ul {
             list-style: none;
             padding: 0;
-            text-align: center;
+            text-align: left;
         }
 
         nav ul li {
-            display: inline-block;
             margin: 0 15px;
         }
 
@@ -53,7 +61,8 @@
             font-size: 1.1rem;
             text-transform: uppercase;
             font-weight: bold;
-            padding: 5px 10px;
+            padding: 10px 15px;
+            display: block;
             border-radius: 5px;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
@@ -63,13 +72,16 @@
             color: #fff; /* White text */
         }
 
+        /* Main Content */
         main {
+            margin-left: 250px;
             padding: 40px 20px;
             background-color: #333; /* Dark gray background */
-            margin: 30px auto;
+            margin-top: 30px;
             max-width: 1200px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            flex: 1;
         }
 
         main h2 {
@@ -164,6 +176,7 @@
             }
 
             main {
+                margin-left: 0;
                 margin: 20px;
                 padding: 20px;
             }
@@ -242,6 +255,35 @@
                                 labels: {
                                     color: '#f4f4f4' /* Light text */
                                 }
+                            }
+                        }
+                    }
+                });
+            </script>
+
+            <!-- Dynamic Bar Chart for Salary Range -->
+            <canvas id="salaryChart-{{ profession.id }}" width="400" height="200"></canvas>
+            <script>
+                var salaryFrom = {{ profession.salary_from }};
+                var salaryTo = {{ profession.salary_to }};
+                var ctx = document.getElementById('salaryChart-{{ profession.id }}').getContext('2d');
+                var salaryChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Salary Range'],
+                        datasets: [{
+                            label: 'Salary',
+                            data: [salaryFrom, salaryTo],
+                            backgroundColor: ['#e50914', '#f4f4f4'],
+                            borderColor: ['#1a1a1a', '#1a1a1a'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
                             }
                         }
                     }

@@ -1,42 +1,80 @@
 {% block content %}
-  <div class="container">
-    <h1 class="page-title">Last 24 Hours Vacancies</h1>
+<div class="container">
+  <h1 class="page-title">Last 24 Hours Vacancies</h1>
 
-    <!-- Back Button -->
-    <a href="javascript:history.back()" class="btn btn-back">Back</a>
+  <!-- Back Button -->
+  <a href="{% url 'profession_list' %}" class="btn btn-back">Back</a>
 
-    <!-- Vacancies Table -->
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Vacancy Name</th>
-          <th>Description</th>
-          <th>Skills</th>
-          <th>Company</th>
-          <th>Salary</th>
-          <th>Region</th>
-          <th>Date Published</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for vacancy in vacancies %}
-          <tr>
-            <td>{{ vacancy.name }}</td>
-            <td>{{ vacancy.description }}</td>
-            <td>{{ vacancy.skills|join:", " }}</td>
-            <td>{{ vacancy.company.name }}</td>
-            <td>{{ vacancy.salary.from }} - {{ vacancy.salary.to }}</td>
-            <td>{{ vacancy.region.name }}</td>
-            <td>{{ vacancy.date_published }}</td>
-          </tr>
-        {% empty %}
-          <tr>
-            <td colspan="7" class="no-data">No vacancies found in the last 24 hours.</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+
+  <!-- Vacancies Table -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Vacancy Name</th>
+        <th>Key Skills</th>
+        <th>Company</th>
+        <th>Salary</th>
+        <th>Region</th>
+        <th>Date Published</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for vacancy in vacancies %}
+      <tr>
+        <td>{{ vacancy.name }}</td>
+        <td>
+          {% if vacancy.key_skills %}
+            {{ vacancy.key_skills|join:", " }}
+          {% else %}
+            No skills specified
+          {% endif %}
+        </td>
+        <td>{{ vacancy.company.name }}</td>
+        <td>
+          {% if vacancy.salary.from and vacancy.salary.to %}
+            {{ vacancy.salary.from }} - {{ vacancy.salary.to }}
+          {% else %}
+            Not specified
+          {% endif %}
+        </td>
+        <td>{{ vacancy.region.name }}</td>
+        <td>{{ vacancy.date_published }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="no-data">No vacancies found in the last 24 hours.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Pagination Controls -->
+  <div class="pagination">
+    <span class="page-number">
+      {% if vacancies.has_previous %}
+        <a href="?page=1">&laquo; First</a>
+        <a href="?page={{ vacancies.previous_page_number }}">Previous</a>
+      {% else %}
+        <span class="disabled">First</span>
+        <span class="disabled">Previous</span>
+      {% endif %}
+    </span>
+
+    <span class="page-number">
+      Page {{ vacancies.number }} of {{ vacancies.paginator.num_pages }}
+    </span>
+
+    <span class="page-number">
+      {% if vacancies.has_next %}
+        <a href="?page={{ vacancies.next_page_number }}">Next</a>
+        <a href="?page={{ vacancies.paginator.num_pages }}">Last &raquo;</a>
+      {% else %}
+        <span class="disabled">Next</span>
+        <span class="disabled">Last</span>
+      {% endif %}
+    </span>
   </div>
+</div>
 {% endblock %}
 
 <!-- Modern CSS -->
@@ -44,10 +82,10 @@
   /* General Styling */
   body {
     font-family: 'Roboto', sans-serif;
-    background-color: #1c1c1c; /* Dark background */
+    background-color: #1c1c1c;
     margin: 0;
     padding: 0;
-    color: #fff; /* White text */
+    color: #fff;
   }
 
   .container {
@@ -59,13 +97,14 @@
   .page-title {
     text-align: center;
     font-size: 2.5rem;
-    color: #fff; /* White text */
+    color: #fff;
     margin-bottom: 20px;
+    text-transform: uppercase;
   }
 
   .btn-back {
     display: inline-block;
-    background-color: #d9534f; /* Red background */
+    background-color: #d9534f;
     color: white;
     padding: 12px 24px;
     margin-bottom: 20px;
@@ -78,7 +117,7 @@
   }
 
   .btn-back:hover {
-    background-color: #c9302c; /* Darker red for hover */
+    background-color: #c9302c;
   }
 
   /* Table Styling */
@@ -87,34 +126,34 @@
     border-collapse: collapse;
     margin-top: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #333; /* Dark background for table */
+    background-color: #333;
   }
 
   .table th,
   .table td {
     padding: 16px;
     text-align: left;
-    border: 1px solid #444; /* Dark border for table */
+    border: 1px solid #444;
   }
 
   .table th {
-    background-color: #d9534f; /* Red background for header */
+    background-color: #d9534f;
     color: white;
     font-size: 16px;
     font-weight: 600;
   }
 
   .table tr:nth-child(even) {
-    background-color: #444; /* Darker rows */
+    background-color: #444;
   }
 
   .table tr:hover {
-    background-color: #555; /* Hover effect */
+    background-color: #555;
   }
 
   .table td {
     font-size: 14px;
-    color: #ddd; /* Lighter text for table data */
+    color: #ddd;
   }
 
   /* No Data Message */
@@ -123,6 +162,32 @@
     font-size: 18px;
     color: #999;
     padding: 20px;
+  }
+
+  /* Pagination Styling */
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+
+  .page-number {
+    display: inline-block;
+  }
+
+  .page-number a {
+    color: #d9534f;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+
+  .page-number a:hover {
+    text-decoration: underline;
+  }
+
+  .page-number .disabled {
+    color: #999;
   }
 
   /* Responsive Design */
@@ -144,6 +209,10 @@
 
     .table {
       font-size: 12px;
+    }
+
+    .pagination {
+      font-size: 14px;
     }
   }
 </style>
