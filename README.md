@@ -11,8 +11,7 @@ A Django-based web application that provides detailed insights into various IT p
 5. [Project Structure](#project-structure)
 6. [Screenshots](#screenshots)
 7. [Contributing](#contributing)
-8. [License](#license)
-9. [Contact](#contact)
+8. [Contact](#contact)
 
 ---
 
