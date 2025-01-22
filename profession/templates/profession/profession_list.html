@@ -3,28 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="IT Professions Portal - Explore various IT professions, their salary ranges, key skills, and more.">
+    <meta name="keywords" content="IT Professions, IT Jobs, IT Careers, IT Skills, IT Salaries">
+    <meta name="author" content="Mostafa Mohamed Ashraf Yakout Saad">
     <title>IT Professions Portal</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
-
     <style>
+        :root {
+            --primary-color: #e50914; /* Red */
+            --secondary-color: #1a1a1a; /* Dark background */
+            --background-dark: #1a1a1a; /* Black background */
+            --text-light: #f4f4f4; /* Light text */
+            --gradient-primary: linear-gradient(135deg, #e50914, #ff4d4d); /* Gradient for buttons */
+            --gradient-secondary: linear-gradient(135deg, #1a1a1a, #333); /* Gradient for hover */
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for containers */
+        }
+
         /* General Styles */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #1a1a1a; /* Black background */
-            color: #f4f4f4; /* Light text */
+            background-color: var(--background-dark);
+            color: var(--text-light);
             display: flex;
             min-height: 100vh;
             flex-direction: column;
         }
 
         header {
-            background-color: #e50914; /* Red background */
-            color: #fff;
+            background: var(--gradient-primary);
+            color: var(--text-light);
             text-align: center;
             padding: 40px 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
             width: 100%;
         }
 
@@ -32,14 +44,20 @@
             margin: 0;
             font-size: 2.5rem;
             letter-spacing: 2px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Sidebar Styles */
         nav {
-            background-color: #333; /* Dark gray background */
+            background-color: var(--secondary-color);
             width: 250px;
             padding: 10px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
             position: fixed;
             top: 0;
             bottom: 0;
@@ -56,7 +74,7 @@
         }
 
         nav ul li a {
-            color: #f4f4f4; /* Light text */
+            color: var(--text-light);
             text-decoration: none;
             font-size: 1.1rem;
             text-transform: uppercase;
@@ -68,35 +86,37 @@
         }
 
         nav ul li a:hover {
-            background-color: #e50914; /* Red background on hover */
-            color: #fff; /* White text */
+            background: var(--gradient-primary);
+            color: var(--text-light);
         }
 
         /* Main Content */
         main {
             margin-left: 250px;
             padding: 40px 20px;
-            background-color: #333; /* Dark gray background */
+            background-color: var(--secondary-color);
             margin-top: 30px;
             max-width: 1200px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
             flex: 1;
         }
 
         main h2 {
             text-align: center;
-            color: #e50914; /* Red text */
+            color: var(--primary-color);
             margin-bottom: 30px;
             font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .profession {
             margin-bottom: 50px;
             padding: 25px;
-            background-color: #272727; /* Black background */
+            background-color: #272727; /* Dark gray background */
             border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--shadow);
             transition: transform 0.3s ease;
         }
 
@@ -105,7 +125,7 @@
         }
 
         .profession h3 {
-            color: #e50914; /* Red text */
+            color: var(--primary-color);
             font-size: 1.6rem;
             margin-bottom: 20px;
             font-weight: 600;
@@ -118,7 +138,7 @@
         }
 
         .profession strong {
-            color: #e50914; /* Red highlight */
+            color: var(--primary-color);
         }
 
         .profession canvas {
@@ -136,27 +156,26 @@
 
         .buttons a {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 1rem;
             font-weight: bold;
             text-transform: uppercase;
             text-decoration: none;
-            color: #fff; /* White text */
+            color: var(--text-light);
             border-radius: 5px;
-            transition: background-color 0.3s ease;
+            background: var(--gradient-primary);
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: var(--shadow);
         }
 
-        .buttons a.btn-red {
-            background-color: #e50914; /* Red button */
-        }
-
-        .buttons a.btn-red:hover {
-            background-color: #ff4d4d; /* Lighter red on hover */
+        .buttons a:hover {
+            background: var(--gradient-secondary);
+            transform: translateY(-2px);
         }
 
         footer {
-            background-color: #333; /* Dark gray background */
-            color: #f4f4f4; /* Light text */
+            background-color: var(--secondary-color);
+            color: var(--text-light);
             text-align: center;
             padding: 20px;
             margin-top: 40px;
@@ -170,6 +189,12 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
             nav ul li {
                 display: block;
                 margin: 5px 0;
@@ -207,10 +232,10 @@
 
     <nav>
         <ul>
-            <li><a href="{% url 'profession_list' %}">Home</a></li>
-            <li><a href="{% url 'general_statistics' %}">General Statistics</a></li>
-            <li><a href="{% url 'about' %}">About</a></li>
-            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'profession_list' %}" aria-label="Home">Home</a></li>
+            <li><a href="{% url 'general_statistics' %}" aria-label="General Statistics">General Statistics</a></li>
+            <li><a href="{% url 'about' %}" aria-label="About">About</a></li>
+            <li><a href="{% url 'contact' %}" aria-label="Contact">Contact</a></li>
         </ul>
     </nav>
 
@@ -227,7 +252,7 @@
             <p><strong>Date Posted:</strong> {{ profession.date_posted }}</p>
 
             <!-- Doughnut Chart for Key Skills -->
-            <canvas id="skillsChart-{{ profession.id }}" width="400" height="200"></canvas>
+            <canvas id="skillsChart-{{ profession.id }}" width="400" height="200" aria-label="Key Skills Chart"></canvas>
             <script>
                 var skills = "{{ profession.key_skills }}".split(','); // Split key_skills string into an array
                 var skillCount = skills.length;
@@ -262,7 +287,7 @@
             </script>
 
             <!-- Dynamic Bar Chart for Salary Range -->
-            <canvas id="salaryChart-{{ profession.id }}" width="400" height="200"></canvas>
+            <canvas id="salaryChart-{{ profession.id }}" width="400" height="200" aria-label="Salary Range Chart"></canvas>
             <script>
                 var salaryFrom = {{ profession.salary_from }};
                 var salaryTo = {{ profession.salary_to }};
@@ -292,17 +317,17 @@
 
             <!-- Buttons -->
             <div class="buttons">
-                <a href="{% url 'deed_to_deed' profession.id %}" class="btn-red">Deed-to-Deed</a>
-                <a href="{% url 'geography' profession.id %}" class="btn-red">Geography</a>
-                <a href="{% url 'skills_view' profession.id %}" class="btn-red">Skills</a>
-                <a href="{% url 'last_vacancies' profession.id %}" class="btn-red">Vacancies</a>
+                <a href="{% url 'deed_to_deed' profession.id %}" class="btn-red" aria-label="Deed-to-Deed">Deed-to-Deed</a>
+                <a href="{% url 'geography' profession.id %}" class="btn-red" aria-label="Geography">Geography</a>
+                <a href="{% url 'skills_view' profession.id %}" class="btn-red" aria-label="Skills">Skills</a>
+                <a href="{% url 'last_vacancies' profession.id %}" class="btn-red" aria-label="Vacancies">Vacancies</a>
             </div>
         </div>
         {% endfor %}
     </main>
 
     <footer>
-        <p>Full Name: Mostafa Mohamed Ashraf Yakout Saad | Academic Group: PN</p>
+        <p>Full Name: Mostafa Mohamed Ashraf Yakout Saad | Academic Group: PN-230910</p>
     </footer>
 </body>
 </html>
