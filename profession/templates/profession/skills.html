@@ -10,40 +10,76 @@
     <!-- Skills Table -->
     <div class="mb-5">
       <h3 class="text-primary mb-3">Top 20 Skills by Frequency</h3>
-      <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-          <tr>
-            <th>Skill</th>
-            <th>Frequency</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for skill, count in top_20_skills %}
+      <div class="table-container">
+        <table class="table">
+          <thead>
             <tr>
-              <td>{{ skill }}</td>
-              <td>{{ count }}</td>
+              <th>Skill</th>
+              <th>Frequency</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% for skill, count in top_20_skills %}
+              <tr>
+                <td>{{ skill }}</td>
+                <td>{{ count }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Skills Chart -->
     <div class="mb-5">
       <h3 class="text-primary mb-3">Skills Frequency Chart</h3>
-      <div class="text-center">
-        <img src="data:image/png;base64,{{ image_base64 }}" alt="Skills Chart" class="img-fluid" />
+      <div class="chart-container">
+        <img src="data:image/png;base64,{{ image_base64 }}" alt="Skills Chart" class="chart-image" />
       </div>
     </div>
   </div>
 {% endblock %}
 
+<!-- Modern CSS -->
 <style>
-  /* Custom Styles */
+  :root {
+    --primary-color: #17a2b8; /* Teal */
+    --secondary-color: #ff4c4c; /* Red */
+    --background-dark: #1a1a1a; /* Dark background */
+    --text-light: #fff; /* White text */
+    --table-dark: #2e2e2e; /* Dark table background */
+    --hover-dark: #b33b3b; /* Darker red for hover */
+    --gradient-primary: linear-gradient(135deg, #17a2b8, #0d6efd); /* Gradient for buttons */
+    --gradient-secondary: linear-gradient(135deg, #ff4c4c, #dc3545); /* Gradient for hover */
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow for cards */
+  }
+
+  /* General Styling */
   body {
     font-family: 'Roboto', sans-serif;
-    background-color: #1a1a1a; /* Dark background */
-    color: #fff; /* White text */
+    background-color: var(--background-dark);
+    margin: 0;
+    padding: 0;
+    color: var(--text-light);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .text-center {
@@ -58,54 +94,101 @@
     margin-bottom: 2rem;
   }
 
+  /* Button Styling */
   .btn-primary {
-    background-color: #ff4c4c; /* Red background */
-    border-color: #ff4c4c; /* Red border */
-    padding: 10px 20px;
-    font-size: 16px;
+    display: inline-block;
+    background: var(--gradient-primary);
+    color: var(--text-light);
+    padding: 12px 24px;
     text-decoration: none;
-    color: #fff; /* White text */
     border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.3s ease, background 0.3s ease;
+    box-shadow: var(--shadow);
   }
 
   .btn-primary:hover {
-    background-color: #b33b3b; /* Darker red on hover */
-    border-color: #b33b3b;
-    color: #fff; /* Keep text white on hover */
+    background: var(--gradient-secondary);
+    transform: translateY(-2px);
+  }
+
+  /* Table Styling */
+  .table-container {
+    overflow-x: auto;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
   }
 
   .table {
     width: 100%;
-    max-width: 100%;
-    margin-bottom: 1rem;
-    background-color: transparent;
-    color: #fff; /* White text */
+    border-collapse: collapse;
+    background-color: var(--table-dark);
+    border-radius: 10px;
+    overflow: hidden;
   }
 
-  .table-bordered {
-    border: 1px solid #ff4c4c; /* Red border */
+  .table th,
+  .table td {
+    padding: 16px;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .table-striped tbody tr:nth-of-type(odd) {
-    background-color: #2e2e2e; /* Darker gray for odd rows */
+  .table th {
+    background: var(--gradient-primary);
+    color: var(--text-light);
+    font-size: 16px;
+    font-weight: 600;
   }
 
-  .thead-dark {
-    background-color: #b33b3b; /* Medium red background */
-    color: white; /* White text */
+  .table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.05);
   }
 
-  .thead-dark th {
-    font-weight: bold;
+  .table tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease;
   }
 
-  .table-striped tbody tr:hover {
-    background-color: #ff4c4c; /* Red hover effect */
+  .table td {
+    font-size: 14px;
+    color: var(--text-light);
   }
 
-  .img-fluid {
-    max-width: 100%;
+  /* Chart Styling */
+  .chart-container {
+    background-color: var(--table-dark);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .chart-image {
+    width: 100%;
     height: auto;
+    border-radius: 10px;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    .btn-primary {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+
+    .table th,
+    .table td {
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    .chart-container {
+      padding: 10px;
+    }
   }
 </style>
