@@ -12,8 +12,8 @@
       <div class="col-md-6">
         <h3 class="text-info">Dynamics of Wages by Year</h3>
         <!-- Table for salary dynamics -->
-        <table class="table table-bordered table-striped">
-          <thead class="thead-dark">
+        <table class="table">
+          <thead>
             <tr>
               <th>Year</th>
               <th>Average Salary (RUB)</th>
@@ -41,8 +41,8 @@
       <div class="col-md-6">
         <h3 class="text-info">Dynamics of the Number of Vacancies by Year</h3>
         <!-- Table for vacancies dynamics -->
-        <table class="table table-bordered table-striped">
-          <thead class="thead-dark">
+        <table class="table">
+          <thead>
             <tr>
               <th>Year</th>
               <th>Number of Vacancies</th>
@@ -69,15 +69,30 @@
   <!-- JavaScript for rendering graphs -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+    // Gradient function for chart backgrounds
+    const createGradient = (ctx, color1, color2) => {
+      const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, color1);
+      gradient.addColorStop(1, color2);
+      return gradient;
+    };
+
     // Data for the Salary Dynamics Chart
+    var salaryCtx = document.getElementById('salaryChart').getContext('2d');
+    var salaryGradient = createGradient(salaryCtx, 'rgba(75, 192, 192, 0.6)', 'rgba(75, 192, 192, 0.1)');
+
     var salaryData = {
       labels: [{% for year in salary_dynamics.keys %}'{{ year }}',{% endfor %}],
       datasets: [{
         label: 'Average Salary (RUB)',
         data: [{% for avg_salary in salary_dynamics.values %}{{ avg_salary|floatformat:2 }},{% endfor %}],
-        borderColor: 'rgba(255, 99, 132, 1)', // Red border color
-        backgroundColor: 'rgba(255, 99, 132, 0.2)', // Red background color
-        borderWidth: 1
+        borderColor: 'rgba(75, 192, 192, 1)', // Teal border color
+        backgroundColor: salaryGradient, // Gradient background
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4, // Smooth line
+        pointRadius: 5,
+        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
       }]
     };
 
@@ -86,8 +101,37 @@
       type: 'line',
       data: salaryData,
       options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              color: '#fff', // White text for legend
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Dark tooltip
+            titleColor: '#fff',
+            bodyColor: '#fff',
+          }
+        },
         scales: {
+          x: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)', // Light grid lines
+            },
+            ticks: {
+              color: '#fff', // White text for x-axis
+            }
+          },
           y: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)', // Light grid lines
+            },
+            ticks: {
+              color: '#fff', // White text for y-axis
+            },
             beginAtZero: true
           }
         }
@@ -95,17 +139,24 @@
     };
 
     // Render the Salary Dynamics Chart
-    var salaryChart = new Chart(document.getElementById('salaryChart'), salaryConfig);
+    var salaryChart = new Chart(salaryCtx, salaryConfig);
 
     // Data for the Vacancies Dynamics Chart
+    var vacanciesCtx = document.getElementById('vacanciesChart').getContext('2d');
+    var vacanciesGradient = createGradient(vacanciesCtx, 'rgba(255, 99, 132, 0.6)', 'rgba(255, 99, 132, 0.1)');
+
     var vacanciesData = {
       labels: [{% for item in vacancies_by_year %}'{{ item.year }}',{% endfor %}],
       datasets: [{
         label: 'Number of Vacancies',
         data: [{% for item in vacancies_by_year %}{{ item.count }},{% endfor %}],
-        borderColor: 'rgba(153, 102, 255, 1)', // Purple border color
-        backgroundColor: 'rgba(153, 102, 255, 0.2)', // Purple background color
-        borderWidth: 1
+        borderColor: 'rgba(255, 99, 132, 1)', // Red border color
+        backgroundColor: vacanciesGradient, // Gradient background
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4, // Smooth line
+        pointRadius: 5,
+        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
       }]
     };
 
@@ -114,8 +165,37 @@
       type: 'bar',
       data: vacanciesData,
       options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              color: '#fff', // White text for legend
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Dark tooltip
+            titleColor: '#fff',
+            bodyColor: '#fff',
+          }
+        },
         scales: {
+          x: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)', // Light grid lines
+            },
+            ticks: {
+              color: '#fff', // White text for x-axis
+            }
+          },
           y: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)', // Light grid lines
+            },
+            ticks: {
+              color: '#fff', // White text for y-axis
+            },
             beginAtZero: true
           }
         }
@@ -123,59 +203,112 @@
     };
 
     // Render the Vacancies Dynamics Chart
-    var vacanciesChart = new Chart(document.getElementById('vacanciesChart'), vacanciesConfig);
+    var vacanciesChart = new Chart(vacanciesCtx, vacanciesConfig);
   </script>
 
-  <!-- Add some modern styling -->
+  <!-- Add modern styling -->
   <style>
+    :root {
+      --primary-color: #17a2b8; /* Teal */
+      --secondary-color: #ff4c4c; /* Red */
+      --background-dark: #1a1a1a; /* Dark background */
+      --text-light: #fff; /* White text */
+      --table-dark: #2e2e2e; /* Dark table background */
+      --hover-dark: #b33b3b; /* Darker red for hover */
+      --gradient-primary: linear-gradient(135deg, #17a2b8, #0d6efd); /* Gradient for buttons */
+      --gradient-secondary: linear-gradient(135deg, #ff4c4c, #dc3545); /* Gradient for hover */
+      --shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for containers */
+    }
+
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #1a1a1a; /* Dark background */
-      color: #fff; /* White text */
+      background-color: var(--background-dark);
+      color: var(--text-light);
     }
 
     .container {
-      background-color: #2c2c2c; /* Dark container background */
+      background-color: var(--table-dark);
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
     }
 
     .table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: var(--table-dark);
+      color: var(--text-light);
       border-radius: 8px;
-      background-color: #333; /* Dark background for table */
-      color: #fff; /* White text in table */
+      overflow: hidden;
+      box-shadow: var(--shadow);
     }
 
     .table th, .table td {
-      text-align: center;
+      padding: 12px;
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .table th {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+      font-weight: bold;
+    }
+
+    .table tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .table tr:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: background-color 0.3s ease;
     }
 
     .btn-secondary {
       font-size: 16px;
-      padding: 10px 20px;
-      border-radius: 4px;
-      background-color: #ff4c4c; /* Red background */
-      color: white;
+      padding: 12px 24px;
+      border-radius: 5px;
+      background: var(--gradient-secondary);
+      color: var(--text-light);
       text-decoration: none;
+      transition: transform 0.3s ease, background 0.3s ease;
+      box-shadow: var(--shadow);
     }
 
     .btn-secondary:hover {
-      background-color: #b33b3b; /* Darker red on hover */
+      background: var(--gradient-primary);
+      transform: translateY(-2px);
     }
 
     .text-info {
-      color: #17a2b8;
-    }
-
-    .thead-dark {
-      background-color: #ff4c4c; /* Red background for table header */
-      color: white;
+      color: var(--primary-color);
     }
 
     h3 {
       font-size: 1.5rem;
       margin-bottom: 20px;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    canvas {
+      max-width: 100%;
+      height: auto !important;
     }
   </style>
 {% endblock %}
